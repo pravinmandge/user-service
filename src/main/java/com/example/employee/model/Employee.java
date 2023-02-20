@@ -21,4 +21,5 @@ public class Employee {
 
     private String name;
     private Long departmentId;
+    private String address;
 }
