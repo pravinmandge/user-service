@@ -30,4 +30,7 @@ public class EmployeeController {
         return employeeService.getEmployee(empId);
     }
 
+    public void hi(){
+
+    }
 }
