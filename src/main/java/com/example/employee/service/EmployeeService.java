@@ -35,6 +35,6 @@ public class EmployeeService {
             departmentVO = response.getBody();
         }
 
-        return new EmployeeVO(employee.getId(), employee.getName(), departmentVO);
+        return new EmployeeVO(employee.getId(), employee.getName1(), departmentVO);
     }
 }
