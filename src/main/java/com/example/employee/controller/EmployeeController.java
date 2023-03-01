@@ -1,7 +1,6 @@
 package com.example.employee.controller;
 
 import com.example.employee.model.Employee;
-import com.example.employee.model.EmployeeVO;
 import com.example.employee.service.EmployeeService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,17 +19,23 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping(value = "/")
+    @PostMapping(value = "/create")
     public Employee createEmployee(@RequestBody Employee employee) {
         return employeeService.createEmployee(employee);
     }
 
     @GetMapping(value = "/{empId}")
-    public EmployeeVO getEmployee(@PathVariable Long empId) {
+    public Employee getEmployee(@PathVariable Long empId) {
         return employeeService.getEmployee(empId);
     }
 
-    public void hi(){
+    @GetMapping(value = "/")
+    public Iterable<Employee> getEmployees() {
+        return employeeService.getEmployees();
+    }
 
+    @GetMapping(value = "/v1/")
+    public Iterable<Employee> getEmployeesV1() {
+        return employeeService.getEmployees();
     }
 }

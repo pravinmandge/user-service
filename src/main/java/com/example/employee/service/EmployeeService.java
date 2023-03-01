@@ -1,11 +1,8 @@
 package com.example.employee.service;
 
-import com.example.employee.model.DepartmentVO;
 import com.example.employee.model.Employee;
-import com.example.employee.model.EmployeeVO;
 import com.example.employee.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,16 +22,13 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public EmployeeVO getEmployee(Long empId) {
+    public Employee getEmployee(Long empId) {
         log.info("Fetching employee");
-        var employee = employeeRepository.findById(empId).orElse(null);
-        var response = restTemplate.getForEntity("http://localhost:9001/departments/" + employee.getDepartmentId(), DepartmentVO.class);
+        return employeeRepository.findById(empId).orElse(null);
+    }
 
-        DepartmentVO departmentVO = null;
-        if(response.getStatusCode() == HttpStatus.OK) {
-            departmentVO = response.getBody();
-        }
-
-        return new EmployeeVO(employee.getId(), employee.getName1(), departmentVO);
+    public Iterable<Employee> getEmployees() {
+        log.info("Fetching employees");
+        return employeeRepository.findAll();
     }
 }
