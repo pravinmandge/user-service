@@ -43,6 +43,7 @@ jobs:
     defaults:
       run:
         working-directory: branch
+    needs: build1
     
     steps:
     - name: Check out code
@@ -65,6 +66,7 @@ jobs:
   build3:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    needs: [build1, build2]
    
     steps:
     - name: Running OpenAPI Spec diff action
