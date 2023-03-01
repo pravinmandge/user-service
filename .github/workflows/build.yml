@@ -19,12 +19,21 @@ jobs:
     # Runs a single command using the runners shell
     - name: Check out code
       uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: mvn --batch-mode --update-snapshots verify
+    - run: cp target/openapi.json spec
     - name: Running OpenAPI Spec diff action
       id: test_breaking_changes
       uses: Tufin/oasdiff-action@v2
       with:
-        base: 'openapi-1.json'
-        revision: 'openapi-2.json'
+        base: 'spec/openapi-1.json'
+        revision: 'spec/openapi.json'
         format: 'text'
         breaking-only: true
         fail-on-diff: true
