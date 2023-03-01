@@ -20,7 +20,7 @@ public class Employee {
     private Long id;
 
     private String name;
-    private String departmentId;
+    private Long departmentId;
     private String address;
     private String city;
 }
