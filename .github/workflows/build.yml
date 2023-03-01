@@ -11,10 +11,12 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "greet"
-  build:
+  build1:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: main
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -23,34 +25,44 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: master
-        path: main
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
- #   - run: cd main
+
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
     - run: mkdir spec && cp target/openapi.json spec
-#    - run: cd ..
+
+  build2:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: branch
     
+    steps:
     - name: Check out code
       uses: actions/checkout@v3
-      with:
-        path: branch
+
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-#    - run: cd branch
+
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
     - run: mkdir spec && cp target/openapi.json spec
-    
+  
+  build3:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+   
+    steps:
     - name: Running OpenAPI Spec diff action
       id: test_breaking_changes
       uses: Tufin/oasdiff-action@v2
