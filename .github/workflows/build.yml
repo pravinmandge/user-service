@@ -35,12 +35,12 @@ jobs:
 
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
-    - run: mkdir spec && cp target/openapi.json spec/openapi-base.json
+    - run: cp target/openapi.json openapi-base.json
     
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: openapi-base
-        path: spec/openapi-base.json
+        path: openapi-base.json
 
   build2:
     # The type of runner that the job will run on
@@ -66,12 +66,12 @@ jobs:
 
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
-    - run: mkdir spec && cp target/openapi.json spec/openapi-revision.json
+    - run: cp target/openapi.json openapi-revision.json
     
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: openapi-revision
-        path: spec/openapi-revision.json
+        path: openapi-revision.json
   
   build3:
     # The type of runner that the job will run on
@@ -79,12 +79,15 @@ jobs:
     needs: [build1, build2]
    
     steps:
-    - uses: actions/download-artifact@v2
+    - uses: actions/checkout@v3
+    
+    - uses: actions/download-artifact@v3
       with:
         name: openapi-base
-    - uses: actions/download-artifact@v2
+    - uses: actions/download-artifact@v3
       with:
         name: openapi-revision
+        
     - name: Running OpenAPI Spec diff action
       id: test_breaking_changes
       uses: Tufin/oasdiff-action@v2
