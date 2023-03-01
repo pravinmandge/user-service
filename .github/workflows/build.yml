@@ -40,7 +40,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: openapi-base
-        path: openapi-base.json
+        path: main/openapi-base.json
 
   build2:
     # The type of runner that the job will run on
@@ -71,7 +71,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: openapi-revision
-        path: openapi-revision.json
+        path: branch/openapi-revision.json
   
   build3:
     # The type of runner that the job will run on
