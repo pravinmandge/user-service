@@ -30,11 +30,11 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - run: cd main
+ #   - run: cd main
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
     - run: mkdir spec && cp target/openapi.json spec
-    - run: cd ..
+#    - run: cd ..
     
     - name: Check out code
       uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-    - run: cd branch
+#    - run: cd branch
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots verify
     - run: mkdir spec && cp target/openapi.json spec
