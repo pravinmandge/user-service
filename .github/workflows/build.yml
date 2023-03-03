@@ -1,31 +1,23 @@
-# This is a basic workflow that is manually triggered
-
 name: OpenAPI DIff Tool
 
-# on:
-#   pull_request:
-#     types:
-#       - opened
 on:
-  workflow_dispatch:
+  pull_request:
+    types:
+      - opened
+# on:
+#   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  apiDiffCheck:
-    # The type of runner that the job will run on
+  api-diff-check:
     runs-on: ubuntu-latest
-#     defaults:
-#       run:
-#         working-directory: main
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
-    - name: Check out code
+
+    - name: Check out master branch
       uses: actions/checkout@v3
       with:
         ref: master
-#        path: main
+
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
@@ -37,25 +29,14 @@ jobs:
       run: mvn --batch-mode --update-snapshots verify
     - run: cp target/openapi.json openapi-base.json
     
-    - uses: actions/upload-artifact@v3
+    - name: Upload API Spec (Base)
+      uses: actions/upload-artifact@v3
       with:
         name: openapi-base
         path: openapi-base.json
 
-#   build2:
-    # The type of runner that the job will run on
-#     runs-on: ubuntu-latest
-#     defaults:
-#       run:
-#         working-directory: branch
-#     needs: build1
-    
-#     steps:
-    - name: Check out code
+    - name: Check out PR branch
       uses: actions/checkout@v3
-      with:
-        ref: feature-apidiff-3
- #       path: branch
 
     - name: Set up JDK 11
       uses: actions/setup-java@v3
@@ -68,25 +49,19 @@ jobs:
       run: mvn --batch-mode --update-snapshots verify
     - run: cp target/openapi.json openapi-revision.json
     
-    - uses: actions/upload-artifact@v3
-      with:
-        name: openapi-revision
-        path: openapi-revision.json
-  
-#   build3:
-    # The type of runner that the job will run on
-#     runs-on: ubuntu-latest
-#     needs: [build1, build2]
-   
-#     steps:
-#     - uses: actions/checkout@v3
+#     - name: Upload API Spec (Revision)
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: openapi-revision
+#         path: openapi-revision.json
     
-    - uses: actions/download-artifact@v3
+    - name: Download API Spec (Base)
+      uses: actions/download-artifact@v3
       with:
         name: openapi-base
-    - uses: actions/download-artifact@v3
-      with:
-        name: openapi-revision
+#     - uses: actions/download-artifact@v3
+#       with:
+#         name: openapi-revision
         
     - name: Running OpenAPI Spec diff action
       id: test_breaking_changes
