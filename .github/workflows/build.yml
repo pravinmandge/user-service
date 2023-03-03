@@ -11,12 +11,12 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build1:
+  apiDiffCheck:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: main
+#     defaults:
+#       run:
+#         working-directory: main
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -40,17 +40,17 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: openapi-base
-        path: main/openapi-base.json
+        path: openapi-base.json
 
-  build2:
+#   build2:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: branch
-    needs: build1
+#     runs-on: ubuntu-latest
+#     defaults:
+#       run:
+#         working-directory: branch
+#     needs: build1
     
-    steps:
+#     steps:
     - name: Check out code
       uses: actions/checkout@v3
       with:
@@ -71,15 +71,15 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: openapi-revision
-        path: branch/openapi-revision.json
+        path: openapi-revision.json
   
-  build3:
+#   build3:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-    needs: [build1, build2]
+#     runs-on: ubuntu-latest
+#     needs: [build1, build2]
    
-    steps:
-    - uses: actions/checkout@v3
+#     steps:
+#     - uses: actions/checkout@v3
     
     - uses: actions/download-artifact@v3
       with:
